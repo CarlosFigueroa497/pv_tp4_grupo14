@@ -20,6 +20,20 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Validación de campos 
+    if (
+      !descripcion ||
+      precioUnitario === '' ||
+      descuento === '' ||
+      stock === '' ||
+      isNaN(precioUnitario) ||
+      isNaN(descuento) ||
+      isNaN(stock)
+    ) {
+      alert('Por favor, completa todos los campos correctamente.');
+      return;
+    }
+
     const precio = parseFloat(precioUnitario);
     const desc = parseFloat(descuento);
     const precioConDescuento = precio * (1 - desc / 100);
