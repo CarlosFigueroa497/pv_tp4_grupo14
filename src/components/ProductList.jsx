@@ -1,6 +1,5 @@
 import ProductItem from './ProductItem';
-
-function ProductList({ productos }) {
+function ProductList({ productos, onEliminar, onEditar }) {
   if (productos.length === 0) {
     return <p>No hay productos para mostrar.</p>;
   }
@@ -9,10 +8,16 @@ function ProductList({ productos }) {
     <div>
       <h2>Lista de Productos</h2>
       {productos.map((prod) => (
-        <ProductItem key={prod.id} producto={prod} />
+        <ProductItem
+          key={prod.id}
+          producto={prod}
+          onEliminar={onEliminar}
+          onEditar={onEditar}
+        />
       ))}
     </div>
   );
 }
 
 export default ProductList;
+

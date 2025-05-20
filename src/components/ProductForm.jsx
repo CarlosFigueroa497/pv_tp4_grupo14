@@ -1,10 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-function ProductForm({ onAddProduct }) {
+function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
   const [descripcion, setDescripcion] = useState('');
   const [precioUnitario, setPrecioUnitario] = useState('');
   const [descuento, setDescuento] = useState('');
   const [stock, setStock] = useState('');
+  const [id, setId] = useState(null);
+
+  useEffect(() => {
+    if (productoParaEditar) {
+      setId(productoParaEditar.id);
+      setDescripcion(productoParaEditar.descripcion);
+      setPrecioUnitario(productoParaEditar.precioUnitario);
+      setDescuento(productoParaEditar.descuento);
+      setStock(productoParaEditar.stock);
+    }
+  }, [productoParaEditar]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +25,7 @@ function ProductForm({ onAddProduct }) {
     const precioConDescuento = precio * (1 - desc / 100);
 
     const nuevoProducto = {
-      id: Date.now(), // genera un id unico
+      id: id || Date.now(),
       descripcion,
       precioUnitario: precio,
       descuento: desc,
@@ -22,17 +33,23 @@ function ProductForm({ onAddProduct }) {
       stock: parseInt(stock)
     };
 
-    onAddProduct(nuevoProducto); // le pasamos el prodcto al padre
-    // limpiar formulario
+    if (id) {
+      onUpdateProduct(nuevoProducto);
+    } else {
+      onAddProduct(nuevoProducto);
+    }
+
+    // limpiar el formulario
     setDescripcion('');
     setPrecioUnitario('');
     setDescuento('');
     setStock('');
+    setId(null);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Agregar Producto</h2>
+      <h2>{id ? 'Editar Producto' : 'Agregar Producto'}</h2>
       <input
         type="text"
         placeholder="Descripción"
@@ -61,10 +78,9 @@ function ProductForm({ onAddProduct }) {
         onChange={(e) => setStock(e.target.value)}
       /><br />
 
-      <button type="submit">Agregar</button>
+      <button type="submit">{id ? 'Actualizar' : 'Agregar'}</button>
     </form>
   );
 }
 
 export default ProductForm;
-
