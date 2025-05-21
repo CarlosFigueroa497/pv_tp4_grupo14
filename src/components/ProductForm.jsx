@@ -7,6 +7,14 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
   const [stock, setStock] = useState('');
   const [id, setId] = useState(null);
 
+  // controlar errores por campo
+  const [errores, setErrores] = useState({
+    descripcion: false,
+    precioUnitario: false,
+    descuento: false,
+    stock: false,
+  });
+
   useEffect(() => {
     if (productoParaEditar) {
       setId(productoParaEditar.id);
@@ -14,23 +22,32 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
       setPrecioUnitario(productoParaEditar.precioUnitario);
       setDescuento(productoParaEditar.descuento);
       setStock(productoParaEditar.stock);
+      // Limpiar errores al cargar producto para editar
+      setErrores({
+        descripcion: false,
+        precioUnitario: false,
+        descuento: false,
+        stock: false,
+      });
     }
   }, [productoParaEditar]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validación de campos 
-    if (
-      !descripcion ||
-      precioUnitario === '' ||
-      descuento === '' ||
-      stock === '' ||
-      isNaN(precioUnitario) ||
-      isNaN(descuento) ||
-      isNaN(stock)
-    ) {
-      alert('Por favor, completa todos los campos correctamente.');
+    // Validación de campos: true = error, false = ok
+    const nuevosErrores = {
+      descripcion: descripcion.trim() === '',
+      precioUnitario: precioUnitario === '' || isNaN(precioUnitario) || Number(precioUnitario) <= 0,
+      descuento: descuento === '' || isNaN(descuento) || Number(descuento) < 0 || Number(descuento) > 100,
+      stock: stock === '' || isNaN(stock) || Number(stock) < 0,
+    };
+
+    setErrores(nuevosErrores);
+
+    // Si hay al menos un error, no continuar
+    const hayError = Object.values(nuevosErrores).some((error) => error);
+    if (hayError) {
       return;
     }
 
@@ -44,7 +61,7 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
       precioUnitario: precio,
       descuento: desc,
       precioConDescuento,
-      stock: parseInt(stock)
+      stock: parseInt(stock),
     };
 
     if (id) {
@@ -59,6 +76,14 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
     setDescuento('');
     setStock('');
     setId(null);
+
+    // limpiar errores
+    setErrores({
+      descripcion: false,
+      precioUnitario: false,
+      descuento: false,
+      stock: false,
+    });
   };
 
   return (
@@ -69,28 +94,36 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
         placeholder="Descripción"
         value={descripcion}
         onChange={(e) => setDescripcion(e.target.value)}
-      /><br />
+        className={errores.descripcion ? 'input-error' : ''}
+      />
+      <br />
 
       <input
         type="number"
         placeholder="Precio Unitario"
         value={precioUnitario}
         onChange={(e) => setPrecioUnitario(e.target.value)}
-      /><br />
+        className={errores.precioUnitario ? 'input-error' : ''}
+      />
+      <br />
 
       <input
         type="number"
         placeholder="Descuento %"
         value={descuento}
         onChange={(e) => setDescuento(e.target.value)}
-      /><br />
+        className={errores.descuento ? 'input-error' : ''}
+      />
+      <br />
 
       <input
         type="number"
         placeholder="Stock"
         value={stock}
         onChange={(e) => setStock(e.target.value)}
-      /><br />
+        className={errores.stock ? 'input-error' : ''}
+      />
+      <br />
 
       <button type="submit">{id ? 'Actualizar' : 'Agregar'}</button>
     </form>
@@ -98,3 +131,4 @@ function ProductForm({ onAddProduct, productoParaEditar, onUpdateProduct }) {
 }
 
 export default ProductForm;
+
