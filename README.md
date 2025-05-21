@@ -1,6 +1,11 @@
-# pv_tp4_grupo14
-Trabajo Práctico N° 4 PV2025 - React – Hooks - Eventos
-Integrantes:
-Figueroa Carlos Augusto  github: CarlosFigueroa497
-Briones Juan Nicolas  github: juanicolas619
-Tapia Moraña Hernan Jairo  github: HernanJairoMT
+# Trabajo Práctico N° 4 G32
+
+## Gestor de Productos
+Esta es una aplicación web hecha con React para gestionar productos. Permite agregar nuevos productos desde un formulario, buscar por descripción o ID, editar los datos y eliminarlos. También muestra el precio con descuento calculado automáticamente.  
+Se usaron hooks como `useState`, `useEffect`, `useMemo` y `useCallback` para manejar los datos y mejorar el rendimiento.  
+La app está organizada en componentes simples y reutilizables para que el código sea más claro.
+
+## Integrantes
+- Figueroa Carlos Augusto – [@CarlosFigueroa497] 
+- Briones Juan Nicolas – [@juanicolas619] 
+- Tapia Moraña Hernan Jairo – [@HernanJairoMT]
