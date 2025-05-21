@@ -41,19 +41,29 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Gestión de Productos</h1>
-      <SearchBar terminoBusqueda={busqueda} onBuscar={setBusqueda} />
-      <ProductForm
-        onAddProduct={agregarProducto}
-        onUpdateProduct={actualizarProducto}
-        productoParaEditar={productoParaEditar}
-      />
-      <ProductList
-        productos={productosFiltrados}
-        onEliminar={eliminarProducto}
-        onEditar={setProductoParaEditar}
-      />
+    <h1>Gestión de Productos</h1>
+
+    <div className="contenedor-principal">
+      <div className="columna-izquierda">
+        <h2>Buscar Producto</h2>
+        <SearchBar terminoBusqueda={busqueda} onBuscar={setBusqueda} />
+        <h2>Formulario de producto</h2>
+        <ProductForm
+          onAddProduct={agregarProducto}
+          onUpdateProduct={actualizarProducto}
+          productoParaEditar={productoParaEditar}
+        />
+      </div>
+
+      <div className="columna-derecha">
+        <ProductList
+          productos={productosFiltrados}
+          onEliminar={eliminarProducto}
+          onEditar={setProductoParaEditar}
+        />
+      </div>
     </div>
+  </div>
   );
 }
 
